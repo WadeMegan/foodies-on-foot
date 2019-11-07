@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Foodies on Foot</title>
+    <link rel="stylesheet" href="main.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqriHKnTnTIX75r-QqCfHC5ZgPbJtOHBA&libraries=places"></script>   
+
+</head>
+<body>
+    <nav class="navBar">
+        <h1>Foodies on Foot</h1>
+    </nav>
+    <main> 
+
+        <section class="homePage">
+            <h1>Foodies on Foot</h1>
+            <h2>Search for restaurants within walking distance:</h2>
+            <form>
+                <input type="text" id="autocomplete">
+                <input type="submit" id="submitButton" value="Submit">
+            </form>
+        </section>
+
+
+        <section class="resultsPage">
+            <header>
+                <p class="showingFor"></p>
+                <button class="newSearchButton">New Search</button>
+            </header>
+           
+            <div class="allResults"></div>
+        </section>
+        
+    </main>
+
+    <div id="map"></div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<script src="index.js"></script>
+</body>
+</html>
