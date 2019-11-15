@@ -6,32 +6,66 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Foodies on Foot</title>
     <link rel="stylesheet" href="main.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqriHKnTnTIX75r-QqCfHC5ZgPbJtOHBA&libraries=places"></script>   
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdh8UOq9nRl26mGXJu6tjVrRGlLskqiaA&libraries=places"></script>   
 
 </head>
 <body>
     <nav class="navBar">
         <h1>Foodies on Foot</h1>
+        <img src="images/google.png" alt="powered by Google" class="poweredByGoogleImg">
     </nav>
     <main> 
 
         <section class="homePage">
+
             <h1>Foodies on Foot</h1>
             <h2>Search for restaurants within walking distance:</h2>
             <form>
                 <input type="text" id="autocomplete">
-                <input type="submit" id="submitButton" value="Submit">
+                <div class="formButtonContainer">
+                    <input name='submit' type="submit" id="submitButton" value="Submit">
+                </div>
+                
             </form>
+
+            <div class="popUpContainer invalidAddressError homePageError hidden">
+                <button class="xButton xButtonError">X</button>
+                <p>This is not a valid address. Please enter a location and submit.</p>
+            </div>
+    
+            <div class="popUpContainer noInputError homePageError hidden">
+                <button class="xButton xButtonError">X</button>
+                <p>Please enter a valid address before submitting.</p>
+            </div>
+    
+            <section class="popUpContainer noResultsNotification homePageError hidden">
+                <button class="xButton xButtonError">X</button>
+                <p>Sorry, we did not find any restaurants within walking distance from that address. Please try another address.</p>
+            </section>
+
         </section>
 
 
         <section class="resultsPage">
             <header>
                 <p class="showingFor"></p>
-                <button class="newSearchButton">New Search</button>
+                <div class="buttonContainer">
+                    <button class="newSearchButton">New Search</button>
+                    <button class="carbonCalculations">Emissions Calculations</button>
+                </div>
             </header>
            
-            <div class="allResults"></div>
+            <div class="allResults">
+                
+            </div>
+
+            <button class="toTopButton">Top</button>            
+        </section>
+
+        <section class="popUpContainer calculationsContainer">
+            <button class="xButton xButtonCalc">x</button>
+            <h2>How was your footprint calculated?</h2>
+            <p>Your carbon emissions were calculated with the assumption that your vehicle emits 357 grams/mile. This is the average for model year 2017 vehicles <a href="https://www.epa.gov/automotive-trends/highlights-automotive-trends-report">(SOURCE)</a>.</p>
         </section>
         
     </main>
