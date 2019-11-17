@@ -156,13 +156,19 @@ function getResults(resultLat, resultLong,userInput){
         //if status is OK, loop through each of the nearby restaurants 
         if (status == google.maps.places.PlacesServiceStatus.OK){
             var restaurantList = result;
-
+            let myPromise = [];  
             for (let i=0;i<restaurantList.length;i++){
                 var id = restaurantList[i].id;
                 var placeId = restaurantList[i].place_id;
                 //calls checkWalkingTime function
-                checkWalkingTime(restaurantList[i],center,placeId,id,userInput); //calls this function, which calculates the travel time for each restaurant
+                 myPromise[i] = new Promise()
+                checkWalkingTime(restaurantList[i],center,placeId,id,userInput, myPromise[i]); //calls this function, which calculates the travel time for each restaurant
             }
+            
+            
+            Promise.all(myPromise).then(() => {
+               addHeader();
+            })
 
             //if more than 20 results, goes through next 20 results, up to 60 total
             if (pagination.hasNextPage){
@@ -188,7 +194,7 @@ function notifyUserNoResults(){
 
 //CHECKWALKINGTIME FUNCTION - uses google distance matrix api to determine the amount of time it would 
 //take to walk from user address to restaurant - done for each restaurant 
-function checkWalkingTime(restaurantList, center, placeId,id,userInput){
+function checkWalkingTime(restaurantList, center, placeId,id,userInput, myPromise){
 
     var origin = center;
     var destination = restaurantList.vicinity;
@@ -221,7 +227,7 @@ function checkWalkingTime(restaurantList, center, placeId,id,userInput){
                 var distance = matrixDistanceResult.rows[0].elements[0].distance.text;
                 
                 //calls lessThanThirty function, which takes travel info and determines if walk time is less than 30 min
-                lessThanThirty(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,placeId,id,userInput);
+                lessThanThirty(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,placeId,id,userInput, myPromise);
             }
 
         }
@@ -233,7 +239,7 @@ function checkWalkingTime(restaurantList, center, placeId,id,userInput){
 
 //LESSTHANTHIRTY FUNCTION - if walking time is less than 30 mins (1800 sec), will keep in result list, create a rating
 //variable, and calculate the driving distance with getDrivingDistance function
-function lessThanThirty(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,placeId,id,userInput){
+function lessThanThirty(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,placeId,id,userInput, myPromise){
     
     if(duration<=1800){ 
         //if restaurant has ratings ... 
@@ -241,12 +247,12 @@ function lessThanThirty(restaurantList, center,duration,durationMinutes, distanc
             //remove decimal places of rating number
             var ratingLong = restaurantList.rating;
             var ratingShort = `Rating: ${ratingLong.toFixed(1)}/5`; 
-            getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
+            getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput, myPromise);
         }
         //if restaurant has no ratings ... 
         else{
             var ratingShort = 'No Reviews';
-            getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
+            getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput, myPromise);
         }
      } 
 }
@@ -254,7 +260,7 @@ function lessThanThirty(restaurantList, center,duration,durationMinutes, distanc
 
 //GETDRIVINGDISTANCE FUNCTION - for each remaining result (less than 30 min walk), calculate the drive 
 //distance using google maps distance matrix api
-function getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput){
+function getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput, myPromise){
     var origin = center;
     var destination = restaurantList.vicinity;
     
@@ -276,7 +282,7 @@ function getDrivingDistance(restaurantList, center,duration,durationMinutes, dis
             var driveDistanceMeters = results.rows[0].elements[0].distance.value;
             var driveDistanceMiles = driveDistanceMeters/1609.344;
             //calls calculateFootprint function 
-            calculateFootprint(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort,driveDistanceMiles,placeId,id,userInput);
+            calculateFootprint(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort,driveDistanceMiles,placeId,id,userInput, myPromise);
         }
     } 
 
@@ -291,15 +297,15 @@ function calculateFootprint(restaurantList, center,duration,durationMinutes, dis
     resultsCount++;
     
     //calls addHeader function 
-    addHeader(userInput);
-
+    //addHeader(userInput);
+     
     var emissionLong = driveDistanceMiles * 357;
   
     //remove decimal places of emission calculation
     var emission = emissionLong.toFixed(1);  
     
     //finally... renders the results
-    renderResults(restaurantList, durationMinutes, distance, matrixDistanceResult,ratingShort,emission,placeId,id)
+    renderResults(restaurantList, durationMinutes, distance, matrixDistanceResult,ratingShort,emission,placeId,id, myPromise)
 }
 
 //ADDHEADER FUNCTION - adds html to header that informs user they are seeing results for the inputted address
@@ -308,7 +314,7 @@ function addHeader(userInput){
 }
 
 //RENDERRESULTS FUNCTION - creates divs for each result and appends it to resultsPage section 
-function renderResults(restaurantList, durationMinutes, distance, matrixDistanceResult,ratingShort,emission,placeId,id){
+function renderResults(restaurantList, durationMinutes, distance, matrixDistanceResult,ratingShort,emission,placeId,id, myPromise){
     //includes separate divs for phoneView, compView, and popUpContainer
     $('.allResults').append(
         `<div class="resultContainer"> 
@@ -361,7 +367,7 @@ function renderResults(restaurantList, durationMinutes, distance, matrixDistance
                 </div>
             </div>
         </div>`);
-
+     myPromise.resolve();
     //calls resultsPopUpButtonClicked
     resultsPopUpButtonClicked(placeId,id);
 }
