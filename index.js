@@ -23,13 +23,9 @@ function watchFormSubmit(){
     $("form").submit(function(event){
         event.preventDefault();
         let userInput = $('#autocomplete').val();
-        //disable submit button so user cannot double click
-        this.submit.disabled=true;
-        this.submit.value="Please wait...";
-        //calls submitButtonDisabled function
-        submitButtonDisabled(this);
+        
         //calls getCoordinates function, which will take input and get the coordinates
-        getCoordinates(userInput);
+        getCoordinates(userInput,this);
     })
 }
 
@@ -37,6 +33,9 @@ function watchFormSubmit(){
 //SUBMITFUNCTIONDISABLED FUNCTION - when the user clicks submit button and disables it,
 //creates a reset button
 function submitButtonDisabled(form){
+    //disable submit button so user cannot double click
+    form.submit.disabled=true;
+    form.submit.value="Please wait...";
     $('.formButtonContainer').append('<input class="reset" type="button" value="Reset">');
     form.submit.style.width="50%";
 
@@ -55,7 +54,7 @@ function submitButtonDisabled(form){
 
 //GETCOORDINATES FUNCTION - takes the address (userInput) and obtains its lat and long coordinates
 //using google maps geocoder API
-function getCoordinates(userInput){
+function getCoordinates(userInput,form){
     var geocoder = new google.maps.Geocoder();
     var results = {
         address: userInput
@@ -71,15 +70,16 @@ function getCoordinates(userInput){
 
         //if the user provides an input, but it is not a valid address, calls invalidAddressGiven function
         if (status == google.maps.places.PlacesServiceStatus.ZERO_RESULTS){
-            invalidAddressGiven();
+            invalidAddressGiven(form);
         }
 
         //if status is OK (valid address & no errors), obtain lat and long coordinates 
         if (status == google.maps.places.PlacesServiceStatus.OK){
+            submitButtonDisabled(form);
             var resultLat = results[0].geometry.location.lat();
             var resultLong=  results[0].geometry.location.lng(); 
             //calls getResults function, which will get list of nearby restaurants
-            getResults(resultLat, resultLong,userInput);
+            getResults(resultLat, resultLong,userInput,form);
         }
        
         //if there is an error, alert the user
@@ -102,11 +102,16 @@ function noInputGiven(){
 }
 
 //INVALIDADDRESSGIVEN FUNCTION - if the user enters an invalid address, shows the .invalidAddressError message
-function invalidAddressGiven (){
+function invalidAddressGiven (form){
     $('.invalidAddressError').show();
     //hides any other error messages on home page
     $('.noResultsNotification').hide();
     $('.noInputError').hide();
+    //reset form when xButton is clicked
+    $('.xButtonError').click(function(event){
+        event.preventDefault();
+        form.reset();
+    })
 }
 
 //SHOWRESULTSPAGE FUNCTION - show resultsPage, .navBar and hides .homePage
@@ -118,7 +123,7 @@ function showResultsPage(){
 
 //GETRESULTS FUNCTION - using lat and long coordinates, gets list of nearby restaurants using 
 //google maps nearby places api
-function getResults(resultLat, resultLong,userInput){
+function getResults(resultLat, resultLong,userInput,form){
 
     //the map variable must be created and is present in index.html, but is not displayed
     var map;
@@ -132,8 +137,7 @@ function getResults(resultLat, resultLong,userInput){
 
     var request = {
         location: center,
-        rankBy: google.maps.places.RankBy.DISTANCE
-        ,
+        rankBy: google.maps.places.RankBy.DISTANCE,
         types: ['restaurant'] //search for restaurants only 
     };
 
@@ -144,7 +148,7 @@ function getResults(resultLat, resultLong,userInput){
 
         //if no results for valid address, calls notifyUserResults function
         if (status == google.maps.places.PlacesServiceStatus.ZERO_RESULTS){
-            notifyUserNoResults();
+            notifyUserNoResults(form);
         }
 
         //if there is an error, alert the user
@@ -154,13 +158,15 @@ function getResults(resultLat, resultLong,userInput){
 
         //if status is OK, loop through each of the nearby restaurants 
         if (status == google.maps.places.PlacesServiceStatus.OK){
+
+        
+
             var restaurantList = result;
 
 
             for (let i=0;i<restaurantList.length;i++){
                 var id = restaurantList[i].id;
                 var placeId = restaurantList[i].place_id;
-
                 checkWalkingTime(restaurantList[i],center,placeId,id,userInput); //calls this function, which calculates the travel time for each restaurant
             }
 
@@ -179,11 +185,24 @@ function getResults(resultLat, resultLong,userInput){
 
 //NOTIFYUSERNORESULTS FUNCTION - if the user has given a valid address, but there are no results, 
 //show .noResultsNotification on home page
-function notifyUserNoResults(){
+function notifyUserNoResults(form){
+
+    //undisable submit, remove reset button
+    form.submit.disabled=false;
+    form.submit.value="Submit";
+    $('.reset').remove();
+    form.submit.style.width="100%";
+
     $('.noResultsNotification').show();
     //hides any other error messages on home page
     $('.noInputError').hide();
     $('.invalidAddressError').hide();
+
+    //reset form when xButton is clicked
+    $('.xButtonError').click(function(event){
+        event.preventDefault();
+        form.reset();
+    })
 }
 
 //CHECKWALKINGTIME FUNCTION - uses google distance matrix api to determine the amount of time it would 
@@ -236,17 +255,19 @@ function checkWalkingTime(restaurantList, center, placeId,id,userInput){
 function lessThanThirty(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,placeId,id,userInput){
     
     if(duration<=1800){ 
+        restaurantList.duration = duration;
+        console.log(restaurantList);
         //if restaurant has ratings ... 
         if(restaurantList.hasOwnProperty('rating')){
             //remove decimal places of rating number
             var ratingLong = restaurantList.rating;
             var ratingShort = `Rating: ${ratingLong.toFixed(1)}/5`; 
-            getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
+            //getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
         }
         //if restaurant has no ratings ... 
         else{
             var ratingShort = 'No Reviews';
-            getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
+            //getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
         }
      } 
 }
@@ -350,32 +371,32 @@ function renderResults(restaurantList, durationMinutes, distance, matrixDistance
                 </section>
 
             </div>
-
-            <div class = "${placeId} popUpContainer popUpResult hidden">
-                
-                <div class="popUpInfo">
-                    <button class="xButtonResult">x</button>
-                    <h2>${restaurantList.name}</h2>
-                    <div class="extraInfoBox">
-                        <div>
-                            <i class="fas fa-map-marker-alt"></i>
-                            <p>${restaurantList.vicinity}</p>
+        </div>`);
+        
+    $('.resultsPage').append(
+        `<div class = "${placeId} popUpContainer popUpResult hidden">
+            <div class="popUpInfo">
+                <button class="xButton xButtonResult">X</button>
+                <h2>${restaurantList.name}</h2>
+                <div class="extraInfoBox">
+                    <div>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>${restaurantList.vicinity}</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-star"></i>
+                        <p>${ratingShort}</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-walking"></i>
+                        <div class="popUpTravel">
+                            <p>${durationMinutes} away</p>  
+                            <p>${distance} away</p>
                         </div>
-                        <div>
-                            <i class="fas fa-star"></i>
-                            <p>${ratingShort}</p>
-                        </div>
-                        <div>
-                            <i class="fas fa-walking"></i>
-                            <div class="popUpTravel">
-                                <p>${durationMinutes} away</p>  
-                                <p>${distance} away</p>
-                            </div>
-                        </div>
-                        <div>
-                            <i class="fas fa-globe-americas"></i>
-                            <p>Save ${emission} grams of CO<sub>2</sub> emissions by walking instead of driving!</p>
-                        </div>
+                    </div>
+                    <div>
+                        <i class="fas fa-globe-americas"></i>
+                        <p>Save ${emission} grams of CO<sub>2</sub> emissions by walking instead of driving!</p>
                     </div>
                 </div>
             </div>
@@ -391,6 +412,7 @@ function resultsPopUpButtonClicked(placeId,id){
     $(`.${id}`).click(function(event){
         event.preventDefault();
         $(`.${placeId}`).show();
+        $('.allResults').hide();
     })
 
     //calls xButtonResultClicked function
@@ -403,6 +425,7 @@ function xButtonResultClicked(placeId,id){
     $('.xButtonResult').click(function(event){
         event.preventDefault();
         $(`.${placeId}`).hide();
+        $('.allResults').show();
    })
 }
 
@@ -424,14 +447,17 @@ function calculationsButtonClicked(){
     $('.carbonCalculations').click(function(event){
         event.preventDefault();
         $('.calculationsContainer').show();
+        $('.allResults').hide();
     })
 }
+
 
 //XBUTTONCLICKED - when xButton is clicked, the calculationsContainer is hidden
 function xButtonClicked(){
     $('.xButton').click(function(event){
         event.preventDefault();
         $('.popUpContainer').hide();
+        $('.allResults').show();
     })
 }
 

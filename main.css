@@ -5,6 +5,22 @@
     box-sizing: border-box;
 }
 
+/*FONT*/
+
+nav, .homePage h1, .calcContentContainer h2, .nameAndAddressContainer h2,.restNameBox,.popUpInfo h2{
+    font-family: 'Cabin', sans-serif;
+}
+
+.homePage form,header, .homePageError,.xButton, .calcContentContainer p, .nameAndAddressContainer p, .moreInfoButton, .travelInfo, .distanceInfoBox, .ratingBox, .emissionsInfoBox, .extraInfoBox {
+    font-family: 'Roboto', sans-serif;
+}
+
+
+
+
+
+
+
 /*HOMEPAGE FORMATTING*/
 
 main{
@@ -60,6 +76,10 @@ nav li{
     display:inline;
 }
 
+nav .footIcon{
+    margin-left:5px;
+}
+
 .name{
     font-size:26px;
 }
@@ -107,11 +127,13 @@ footer{
 #autocomplete{
     margin-top:25px;
     margin-bottom:15px;
+    padding-left:10px;
+    border-radius:5px;
     width:100%;
     height:35px;
     display:flex;
     color:grey;
-    border:1px solid grey;
+    box-shadow:none;
 }
 
 .formButtonContainer{
@@ -153,20 +175,28 @@ form{
 .homePageError{
     position:relative;
     top:20px;
-    width: 75%;
-    border:1px solid grey;
-    padding:10px;
-    
+    margin-bottom:20px;
+    width: 100%;
+    padding:30px 10px 10px 10px;
+    background-color:#edf5e0;    
+    text-align:center;
+    border-radius:10px;
 }
+
 
 .xButtonError{
     position:absolute;
-    top:-10px;
-    right:-10px;
+    top:5px;
+    right:5px;
     height:20px;
     width:20px;
-    border:1px solid black;
     border-radius:50%;
+    background-color: #042e56;
+    color:white;
+}
+
+.xButtonError:hover{
+    background-color: #01488c;
 }
 
 /*END HOMEPAGE FORMATTING*/
