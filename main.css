@@ -5,48 +5,150 @@
     box-sizing: border-box;
 }
 
+/*HOMEPAGE FORMATTING*/
+
+main{
+    height:80vh;
+    margin-top:10vh;
+    margin-bottom:10vh;
+}
+
+.homePage{
+    border-top:3px solid #308473;
+    border-bottom:3px solid #308473;
+    background-image: url('images/hero.jpg');
+    background-repeat:no-repeat;
+    background-size:100vh;
+    height:100%;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:center;
+}
+
+
 .hidden{
     display:none;
 }
  
+.poweredByGoogleImgNav{
+    display:none;
+}
+
+/*nav bar*/
+
 nav{
-    height:5vh;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.poweredByGoogleImg{
-    height:3vh;
-}
-
-main{
+    position:fixed;
+    top:0;
     width:100%;
-    height:95vh;
-
+    background-color:#389583;
+    color:white;
+    height:10vh;
+    padding-left:10px;
+    padding-right:10px;
+    z-index: 99;
 }
 
-body{
-    width:100%;
+nav ul{
     height:100%;
-}
-
-/* home page formatting */
-
-
-.homePage{
-    width:100%;
-    height:100vh;
     display:flex;
-    flex-direction:column;
     justify-content:center;
     align-items:center;
 }
 
-.homePage h2{
-    text-align:center;
-    padding-top:25px;
+nav li{
+    display:inline;
 }
+
+.name{
+    font-size:26px;
+}
+
+/*footer*/
+
+footer{
+    background-color:#389583;
+    height:10vh;
+    padding-left:10px;
+    padding-right:10px;
+    position:fixed;
+    width:100%;
+    bottom:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index: 99;
+}
+
+.homePageFormContainer{
+    background-color: rgba(186,222,215,0.8);
+    color:#042e56;
+    width:85%;
+    padding:25px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    border-radius:20px;
+}
+
+.homePage h1{
+    text-align:center;
+    font-size:26px;
+}
+
+.homePage h1 i{
+    color:grey;
+}
+
+/*address form formatting*/
+
+
+#autocomplete{
+    margin-top:25px;
+    margin-bottom:15px;
+    width:100%;
+    height:35px;
+    display:flex;
+    color:grey;
+    border:1px solid grey;
+}
+
+.formButtonContainer{
+    width:100%;
+    display:flex;
+}
+
+#submitButton{
+    width:100%;
+    height:30px;
+    background-color: #042e56;
+    color:white;
+    border-radius:20px;
+}
+
+#submitButton:hover, .reset:hover{
+    background-color: #01488c;
+}
+
+.reset{
+    width:50%;
+    height:30px;
+    margin-left:10px;
+    background-color: #042e56;
+    color:white;
+    border-radius:20px;
+}
+
+form{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+
+/*error*/
 
 .homePageError{
     position:relative;
@@ -67,70 +169,67 @@ body{
     border-radius:50%;
 }
 
+/*END HOMEPAGE FORMATTING*/
 
-/* address form formatting */
 
-#autocomplete{
-    width:75%;
-    height:30px;
-    border:1px solid grey;
+
+/* RESULTS PAGE FORMATTING */
+
+.resultsPage{
+    margin-top:10vh;
+    margin-bottom:10vh;
+    padding-bottom:5px;
 }
-
-.formButtonContainer{
-    width:75%;
-    display:flex;
-}
-
-#submitButton{
-    width:100%;
-    height:30px;
-    border:1px solid grey;
-}
-
-.reset{
-    width:50%;
-    margin-left:10px;
-    border:1px solid grey;
-}
-
-form{
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-}
-
-form input{
-    margin-top:10px;
-}
-
-
-.newSearchButton, .carbonCalculations{
-    width:100px;
-    height:40px;
-    border:1px solid black;
-
-}
-
-
-/* results page formatting */
 
 .resultContainer{
-    height:140px;
-    border:1px solid black;
-    margin:10px;
+    margin-top:10px;
+    height:180px;
     display:flex;
+    background-color:#edf5e0;
+    border:3px solid #e3ead7;
+    margin:10px;
 }
+
+
+
+
+/*header formatting*/
+
+.newSearchButton, .carbonCalculations{
+    background-color:#389583;
+    color:white;
+    width:50%;
+    height:100%;
+    border:2px solid #308473;
+}
+
+
+
+.newSearchButton:hover, .carbonCalculations:hover{
+    background-color:#042e56;
+}
+
 
 .buttonContainer{
     display:flex;
-    margin-top:10px;
-    margin-left:10px;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    height:45px;
+    background-color:#389583;
+    margin-bottom:20px;
 }
 
-.carbonCalculations{
+
+header p{
     margin-left:10px;
+    margin-right:10px;
+    color:grey;
+    border-bottom:2px solid grey;
 }
+
+
+
 
 /*phone view results formatting*/
 
@@ -140,25 +239,27 @@ form input{
 }
 
 .mainInfoContainer{
-    width:60%;
+    width:55%;
     display:flex;
     flex-direction:column;
     align-items:center;
     text-align:center;
     justify-content:space-around;
+    color:#042e56;
+
 }    
 
 .travelInfo{
-    width:34%;
-    border:1px solid black;
+    width:43%;
     margin:3%;
     padding:1%;
     display:flex;
     flex-direction:column;
     text-align:center;
+    align-items:center;
     justify-content:space-evenly;
-    border-radius:10%;
-
+    border-radius:20px;
+    background-color: rgba(186,222,215,1);
 }
 
 .addressPhone{
@@ -166,12 +267,19 @@ form input{
     margin-top:10px;
 }
 
-.moreInfoButton{
-    border:1px solid black;
+.moreInfoButton{    
+    background-color: #042e56;
+    color:white;
     width:100px;
     height:20%;
     margin-left:10px;
+    border-radius:20px;
 }
+
+.moreInfoButton:hover{
+    background-color: #01488c;
+}
+
 
 .carbonAndMoreInfo{
     display:flex;
@@ -179,29 +287,79 @@ form input{
     width:100%;
 }
 
+/*compView formatting*/
+
 .compView{
     display:none;
 }
 
+.compBox{
+    width:25%;
+    display:flex;
+    flex-direction:column;
+    text-align:center;
+}
+
+.restNameBox{
+    padding:1%;
+    justify-content:center;
+    color: #042e56;
+}
+
+.emissionsInfoBox{
+    margin:1%;
+    padding:1%;
+    display:flex;
+    flex-direction:column;
+    text-align:center;
+    align-items:center;
+    justify-content:space-evenly;
+    border-radius:20px;
+    background-color: rgba(186,222,215,1);
+}
+
+.ratingBox{
+    justify-content:space-evenly;
+}
+
+.distanceInfoBox{
+    margin:1%;
+    justify-content:space-evenly;
+}
+
+
+
+
+
+
+
+
+
 .toTopButton{
     display:none;
-    position: fixed; 
-    bottom: 20px; 
-    right: 30px; 
-    z-index: 99; 
+    position:fixed;
+    right:10px;
+    z-index: 100; 
     border: none; 
     outline: none; 
-    background-color: black; 
+    background-color:#042e56; 
     color: white; 
     cursor: pointer; 
-    padding: 15px; 
+    height:50px;
+    width:50px;
+    
+    border-radius:50%;
+}
+
+.toTopButton:hover{
+    background-color: #01488c;
 }
 
 .scrolled{
     display:block;
 }
 
-/* calculations container formatting */
+/* POP UP CONTAINER FORMATTING */
 
 .calculationsContainer,.popUpResult{
     position:fixed;
@@ -209,42 +367,104 @@ form input{
     left:10%;
     width:80%;
     height:80%;
-    border:1px solid black;
-    background-color:white;
-    z-index: 1;
-    padding:15%;
+    padding:30px;
 } 
 
 .calculationsContainer{
-    display:flex;
-    flex-direction:column;
     text-align:center;
     justify-content:space-evenly;
+    background-image: url('images/driving.png');
+    background-repeat:no-repeat;
+    background-size:100vh;
+    z-index:97;
+    box-shadow: 1000px 1000px 0px 2000px #389583;
+    border-radius:20px;
+    border:3px solid #308473;
 }
 
-.popUpResults{
+.calcContentContainer{
+    background-color: rgba(186,222,215,0.9);
+    border-radius:20px;
+    padding:10px;
+    height:100%;
+    position:relative;
     display:flex;
     flex-direction:column;
+    justify-content:center;
+}
+
+.calcContentContainer p{
+    margin-top:25px;
+}
+
+.xButtonCalc,.xButtonResult{
+    position:absolute;
+    top:5px;
+    right:5px;
+    height:30px;
+    width:30px;
+    border-radius:50%;
+    background-color: #042e56;
+    color:white;
+}
+
+.xButtonCalc:hover, .xButtonResult:hover{
+    background-color: #01488c;
+}
+
+/*pop up results formatting*/
+
+.popUpResult{
+    justify-content:space-evenly;
+    background-image: url('images/walking.jpg');
+    background-repeat:no-repeat;
+    background-size:auto 100%;
+    z-index:97;
+    box-shadow: 1000px 1000px 0px 2000px #389583;
+    border-radius:20px;
+    border:3px solid #308473;
+}
+
+.popUpInfo h2{
+    text-align:center;
+    color: #042e56;
 }
 
 .popUpInfo{
-    width:100%;
+    background-color: rgba(186,222,215,0.9);
+    border-radius:20px;
+    padding:20px;
     height:100%;
-    text-align:center;
+    position:relative;
     display:flex;
     flex-direction:column;
-    justify-content:space-between;
+    justify-content:space-evenly;
 }
 
-.xButtonCalc, .xButtonResult{
-    position:absolute;
-    top:-15px;
-    right:-15px;
-    height:30px;
-    width:30px;
-    border:1px solid black;
-    border-radius:50%;
+.extraInfoBox{
+    height:60%;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-evenly;
 }
+
+.extraInfoBox div{
+    display:flex;
+}
+
+.extraInfoBox i{
+    margin-right:30px;
+}
+
+.popUpTravel{
+    display:flex;
+    flex-direction:column;
+}
+
+
+
+/* END OF POP UP CONTAINER FORMATTING */
+
 
 
 
@@ -255,6 +475,19 @@ form input{
         display:block;
     }
 }
+
+/*styling for screens greater than 700px wide*/
+@media only screen and (min-width: 700px) {
+    /*make address appear under restaurant name*/
+    .homePage{
+        background-image: url('images/hero.jpg');
+        background-repeat:no-repeat;
+        background-size:100%;
+        height:100%;
+    }
+    
+}
+
 
 /*styling for screens greater than 750px wide*/
 @media only screen and (min-width: 750px) {
@@ -267,16 +500,9 @@ form input{
         display:flex;
         width:100%;
     }
-    .compBox{
-        width:25%;
-        display:flex;
-        flex-direction:column;
-        justify-content:space-around;
-        text-align:center;
-    }
     /*change height of resultContainer*/
     .resultContainer{
-        height:100px;
+        height:120px;
         margin:10px;
         
     }

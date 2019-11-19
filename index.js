@@ -6,8 +6,7 @@ var resultsCount=0;
 //PAGELOAD FUNCTION - hides .navBar, .resultsPage, and .calculationsContainer, so that 
 //only .homePage is visible on page load
 function pageLoad(){
-    //('.homePage').hide();
-    $('.navBar').hide();
+    //$('.homePage').hide();
     $('.resultsPage').hide();
     $('.calculationsContainer').hide();
 }
@@ -157,10 +156,11 @@ function getResults(resultLat, resultLong,userInput){
         if (status == google.maps.places.PlacesServiceStatus.OK){
             var restaurantList = result;
 
+
             for (let i=0;i<restaurantList.length;i++){
                 var id = restaurantList[i].id;
                 var placeId = restaurantList[i].place_id;
-                //calls checkWalkingTime function
+
                 checkWalkingTime(restaurantList[i],center,placeId,id,userInput); //calls this function, which calculates the travel time for each restaurant
             }
 
@@ -169,8 +169,8 @@ function getResults(resultLat, resultLong,userInput){
                 sleep:2;
                 pagination.nextPage();
             }
-
             showResultsPage();
+
         }
     }
 
@@ -324,8 +324,8 @@ function renderResults(restaurantList, durationMinutes, distance, matrixDistance
                 </div>
                 
                 <div class='travelInfo'>
-                    <p>${durationMinutes} away</p>  
-                    <p class="carbonInfo">Save ${emission} grams of CO2 by walking</p>
+                    <p>${durationMinutes} away <i class="fas fa-walking"></i></p> 
+                    <p class="carbonInfo">Save ${emission} grams of CO<sub>2</sub> emissions by walking <i class="fas fa-globe-americas"></i></p>
                 </div>
                              
             </div>
@@ -335,29 +335,48 @@ function renderResults(restaurantList, durationMinutes, distance, matrixDistance
                 <section class="compBox restNameBox">
                     <h2>${restaurantList.name}</h2>
                 </section>  
-                <section class="compBox distanceInfoBox">   
+                <section class="compBox distanceInfoBox">
+                    <i class="fas fa-map-marker-alt"></i>
                     <p>${restaurantList.vicinity}</p>
                     <p>${distance} away</p>
                 </section>
                 <section class="compBox ratingBox">
+                    <i class="fas fa-star"></i>
                     <p>${ratingShort}</p>
                 </section>
                 <section class="compBox emissionsInfoBox">
-                    <p>${durationMinutes}</p>  
-                    <p>${emission} grams of CO2</p>
+                    <p>${durationMinutes} away <i class="fas fa-walking"></i></p> 
+                    <p class="carbonInfo">Save ${emission} grams of CO<sub>2</sub> emissions by walking <i class="fas fa-globe-americas"></i></p>
                 </section>
 
             </div>
 
             <div class = "${placeId} popUpContainer popUpResult hidden">
-                <button class="xButtonResult">x</button>
+                
                 <div class="popUpInfo">
+                    <button class="xButtonResult">x</button>
                     <h2>${restaurantList.name}</h2>
-                    <p>${restaurantList.vicinity}</p>
-                    <p>${ratingShort}</p>
-                    <p>${durationMinutes} away</p>  
-                    <p>${distance} away</p>
-                    <p>Save ${emission} grams of CO2 if you walk!</p>
+                    <div class="extraInfoBox">
+                        <div>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p>${restaurantList.vicinity}</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-star"></i>
+                            <p>${ratingShort}</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-walking"></i>
+                            <div class="popUpTravel">
+                                <p>${durationMinutes} away</p>  
+                                <p>${distance} away</p>
+                            </div>
+                        </div>
+                        <div>
+                            <i class="fas fa-globe-americas"></i>
+                            <p>Save ${emission} grams of CO<sub>2</sub> emissions by walking instead of driving!</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>`);
