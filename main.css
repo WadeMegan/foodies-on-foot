@@ -5,7 +5,7 @@
     box-sizing: border-box;
 }
 
-/*FONT*/
+/* font stlying */
 
 nav, .homePage h1, .calcContentContainer h2, .nameAndAddressContainer h2,.restNameBox,.popUpInfo h2{
     font-family: 'Cabin', sans-serif;
@@ -16,42 +16,35 @@ nav, .homePage h1, .calcContentContainer h2, .nameAndAddressContainer h2,.restNa
 }
 
 
-
-
-
-
-
-/*HOMEPAGE FORMATTING*/
-
-main{
-    height:80vh;
-    margin-top:10vh;
-    margin-bottom:10vh;
+li.name{
+    font-size:22px;
+    line-height:22px;
 }
 
-.homePage{
-    border-top:3px solid #308473;
-    border-bottom:3px solid #308473;
-    background-image: url('images/hero.jpg');
-    background-repeat:no-repeat;
-    background-size:100vh;
-    height:100%;
-    display:flex;
-    flex-direction: column;
-    align-items:center;
-    justify-content:center;
+li.footIcon{
+    font-size:11px;
 }
 
-
-.hidden{
-    display:none;
-}
- 
-.poweredByGoogleImgNav{
-    display:none;
+.homePage h1{
+    font-size:28px;
+    line-height:32px;
 }
 
-/*nav bar*/
+form{
+    font-size:18px;
+}
+
+.nameAndAddressContainer h2,.popUpInfo h2{
+    font-size:22px;
+    line-height:28px;
+}
+
+.homePageError, header,.nameAndAddressContainer p, .moreInfoButton, .travelInfo, .calcContentContainer p, .popUpInfo p, .compBox p{
+    font-size:16px;
+    line-height:20px;
+}
+
+/* nav bar styling */
 
 nav{
     position:fixed;
@@ -80,8 +73,17 @@ nav .footIcon{
     margin-left:5px;
 }
 
-.name{
-    font-size:26px;
+/* main and body styling */
+
+body{
+    height:80vh;
+    margin-top:10vh;
+    margin-bottom:10vh;
+}
+
+main{
+    height:100%;
+    overflow:scroll;
 }
 
 /*footer*/
@@ -100,11 +102,28 @@ footer{
     z-index: 99;
 }
 
+/* home page styling */
+
+.homePage{
+    height:100%;
+    background-image: url('images/hero.jpg');
+    background-repeat:no-repeat;
+    background-size:100% 100%;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:center;
+}
+
+.hidden {   /* error messages are hidden */
+    display:none;
+}
+ 
 .homePageFormContainer{
     background-color: rgba(186,222,215,0.8);
     color:#042e56;
     width:85%;
-    padding:25px;
+    padding:0px 25px 25px 25px;
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -114,21 +133,19 @@ footer{
 
 .homePage h1{
     text-align:center;
-    font-size:26px;
 }
 
 .homePage h1 i{
     color:grey;
 }
 
-/*address form formatting*/
-
+/* form styling */
 
 #autocomplete{
-    margin-top:25px;
+    margin-top:15px;
     margin-bottom:15px;
     padding-left:10px;
-    border-radius:5px;
+    border-radius:20px;
     width:100%;
     height:35px;
     display:flex;
@@ -143,7 +160,7 @@ footer{
 
 #submitButton{
     width:100%;
-    height:30px;
+    height:35px;
     background-color: #042e56;
     color:white;
     border-radius:20px;
@@ -155,7 +172,7 @@ footer{
 
 .reset{
     width:50%;
-    height:30px;
+    height:35px;
     margin-left:10px;
     background-color: #042e56;
     color:white;
@@ -169,8 +186,7 @@ form{
     align-items:center;
 }
 
-
-/*error*/
+/* home page error styling */
 
 .homePageError{
     position:relative;
@@ -182,7 +198,6 @@ form{
     text-align:center;
     border-radius:10px;
 }
-
 
 .xButtonError{
     position:absolute;
@@ -199,15 +214,9 @@ form{
     background-color: #01488c;
 }
 
-/*END HOMEPAGE FORMATTING*/
-
-
-
-/* RESULTS PAGE FORMATTING */
+/* results page styling */
 
 .resultsPage{
-    margin-top:10vh;
-    margin-bottom:10vh;
     padding-bottom:5px;
 }
 
@@ -219,11 +228,7 @@ form{
     border:3px solid #e3ead7;
     margin:10px;
 }
-
-
-
-
-/*header formatting*/
+/* header (includes buttons) styling */
 
 .newSearchButton, .carbonCalculations{
     background-color:#389583;
@@ -233,23 +238,19 @@ form{
     border:2px solid #308473;
 }
 
-
-
 .newSearchButton:hover, .carbonCalculations:hover{
     background-color:#042e56;
 }
-
 
 .buttonContainer{
     display:flex;
     justify-content:center;
     align-items:center;
     width:100%;
-    height:45px;
+    height:50px;
     background-color:#389583;
     margin-bottom:20px;
 }
-
 
 header p{
     margin-left:10px;
@@ -258,10 +259,7 @@ header p{
     border-bottom:2px solid grey;
 }
 
-
-
-
-/*phone view results formatting*/
+/* phone view results styling */
 
 .phoneView{
     display:flex;
@@ -276,7 +274,6 @@ header p{
     text-align:center;
     justify-content:space-around;
     color:#042e56;
-
 }    
 
 .travelInfo{
@@ -310,14 +307,7 @@ header p{
     background-color: #01488c;
 }
 
-
-.carbonAndMoreInfo{
-    display:flex;
-    height:40px;
-    width:100%;
-}
-
-/*compView formatting*/
+/* comp view styling */
 
 .compView{
     display:none;
@@ -357,13 +347,7 @@ header p{
     justify-content:space-evenly;
 }
 
-
-
-
-
-
-
-
+/* to top button styling */
 
 .toTopButton{
     display:none;
@@ -377,19 +361,19 @@ header p{
     cursor: pointer; 
     height:50px;
     width:50px;
-    
     border-radius:50%;
 }
 
 .toTopButton:hover{
     background-color: #01488c;
+    cursor:pointer;
 }
 
 .scrolled{
     display:block;
 }
 
-/* POP UP CONTAINER FORMATTING */
+/* pop up container (carbon calculations and results) styling */
 
 .calculationsContainer,.popUpResult{
     position:fixed;
@@ -397,35 +381,41 @@ header p{
     left:10%;
     width:80%;
     height:80%;
-    padding:30px;
+    padding:25px;
+    border:4px solid #308473;
 } 
+
+/* carbon calculations container styling */
 
 .calculationsContainer{
     text-align:center;
-    justify-content:space-evenly;
     background-image: url('images/driving.png');
     background-repeat:no-repeat;
     background-size:100vh;
     z-index:97;
     box-shadow: 1000px 1000px 0px 2000px #389583;
     border-radius:20px;
-    border:3px solid #308473;
 }
 
 .calcContentContainer{
     background-color: rgba(186,222,215,0.9);
     border-radius:20px;
-    padding:10px;
+    padding:40px 20px 20px 20px;
     height:100%;
     position:relative;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
+    overflow:scroll;
 }
 
 .calcContentContainer p{
     margin-top:25px;
 }
+
+.calcContentContainer a{
+    color:black;
+    cursor:pointer;
+}
+
+/* x button (carbon calculations and results) styling */
 
 .xButtonCalc,.xButtonResult{
     position:absolute;
@@ -440,9 +430,10 @@ header p{
 
 .xButtonCalc:hover, .xButtonResult:hover{
     background-color: #01488c;
+    cursor:pointer;
 }
 
-/*pop up results formatting*/
+/* pop up results styling */
 
 .popUpResult{
     justify-content:space-evenly;
@@ -452,7 +443,15 @@ header p{
     z-index:97;
     box-shadow: 1000px 1000px 0px 2000px #389583;
     border-radius:20px;
-    border:3px solid #308473;
+}
+
+.popUpInfo{
+    background-color: rgba(186,222,215,0.9);
+    border-radius:20px;
+    height:100%;
+    position:relative;
+    padding:40px 20px 20px 20px;
+    overflow:scroll;
 }
 
 .popUpInfo h2{
@@ -460,42 +459,28 @@ header p{
     color: #042e56;
 }
 
-.popUpInfo{
-    background-color: rgba(186,222,215,0.9);
-    border-radius:20px;
-    padding:20px;
-    height:100%;
-    position:relative;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-evenly;
-}
 
 .extraInfoBox{
-    height:60%;
+    margin-top:20px;
     display:flex;
     flex-direction:column;
     justify-content:space-evenly;
 }
 
-.extraInfoBox div{
+.infoBullet{
     display:flex;
+    padding-bottom:10px;
 }
 
 .extraInfoBox i{
-    margin-right:30px;
+    padding-right:15px;
 }
+
 
 .popUpTravel{
     display:flex;
     flex-direction:column;
 }
-
-
-
-/* END OF POP UP CONTAINER FORMATTING */
-
-
 
 
 /*styling for screens greater than 600px wide*/
@@ -504,6 +489,9 @@ header p{
     .addressPhone{
         display:block;
     }
+    .calculationsContainer,.popUpResult{
+        padding:60px;
+    } 
 }
 
 /*styling for screens greater than 700px wide*/
@@ -515,12 +503,20 @@ header p{
         background-size:100%;
         height:100%;
     }
-    
+    .homePageFormContainer{
+        width:75%;
+    }
+    .popUpResult{
+        background-size: auto 100vh;
+    }    
 }
 
 
 /*styling for screens greater than 750px wide*/
 @media only screen and (min-width: 750px) {
+    #autocomplete, .reset, #submitButton{
+        height:40px;
+    }
     /*do not display phoneView of results*/
     .phoneView{
         display:none;
@@ -534,6 +530,54 @@ header p{
     .resultContainer{
         height:120px;
         margin:10px;
-        
     }
+    .calculationsContainer{
+        background-size:100%;
+    }
+    .calculationsContainer,.popUpResult{
+        padding:75px;
+    } 
+}
+
+/*styling for screens greater than 900px wide*/
+@media only screen and (min-width: 900px) {
+    /*make address appear under restaurant name*/
+    .calculationsContainer,.popUpResult{
+        padding:90px;
+    } 
+}
+
+/*styling for screens greater than 1000px wide*/
+@media only screen and (min-width: 1000px) {
+    .homePageFormContainer{
+        width:60%;
+    }
+    #autocomplete, .reset, #submitButton{
+        height:45px;
+    }
+}
+
+/*styling for screens greater than 1100px wide*/
+@media only screen and (min-width: 1100px) {
+    /*make address appear under restaurant name*/
+    .calculationsContainer,.popUpResult{
+        padding:130px;
+    } 
+    .popUpResult{
+        background-size:100vh 100vh;
+    }    
+}
+
+
+/*styling for screens greater than 1500px wide*/
+@media only screen and (min-width: 1500px) {
+    .homePageFormContainer{
+        width:40%;
+    }
+    #autocomplete, .reset, #submitButton{
+        height:50px;
+    }
+    .calculationsContainer,.popUpResult{
+        padding:250px;
+    } 
 }

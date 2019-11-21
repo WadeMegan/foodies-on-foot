@@ -256,13 +256,13 @@ function lessThanThirty(restaurantList, center,duration,durationMinutes, distanc
     
     if(duration<=1800){ 
         restaurantList.duration = duration;
-        console.log(restaurantList);
+
         //if restaurant has ratings ... 
         if(restaurantList.hasOwnProperty('rating')){
             //remove decimal places of rating number
             var ratingLong = restaurantList.rating;
             var ratingShort = `Rating: ${ratingLong.toFixed(1)}/5`; 
-            //getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
+            getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
         }
         //if restaurant has no ratings ... 
         else{
@@ -379,22 +379,22 @@ function renderResults(restaurantList, durationMinutes, distance, matrixDistance
                 <button class="xButton xButtonResult">X</button>
                 <h2>${restaurantList.name}</h2>
                 <div class="extraInfoBox">
-                    <div>
+                    <div class="infoBullet">
                         <i class="fas fa-map-marker-alt"></i>
                         <p>${restaurantList.vicinity}</p>
                     </div>
-                    <div>
+                    <div class="infoBullet">
                         <i class="fas fa-star"></i>
                         <p>${ratingShort}</p>
                     </div>
-                    <div>
+                    <div class="infoBullet">
                         <i class="fas fa-walking"></i>
                         <div class="popUpTravel">
                             <p>${durationMinutes} away</p>  
                             <p>${distance} away</p>
                         </div>
                     </div>
-                    <div>
+                    <div class="infoBullet">
                         <i class="fas fa-globe-americas"></i>
                         <p>Save ${emission} grams of CO<sub>2</sub> emissions by walking instead of driving!</p>
                     </div>
@@ -463,7 +463,7 @@ function xButtonClicked(){
 
 //TOTOP FUNCTION - shows .toTopButton when user scrolls from top of doc
 function toTop(){
-$(window).scroll(function(){
+$("main").scroll(function(){
     $('.toTopButton').toggleClass('scrolled', $(this).scrollTop() > 200);
 });
 }
@@ -471,8 +471,7 @@ $(window).scroll(function(){
 //TOTOPBUTTONCLICKED FUNCTION - if .toTopButton is clicked, take user to top of page
 function toTopButtonClicked(){
     $('.toTopButton').click(function(event){
-        document.body.scrollTop=0; //for safari
-        document.documentElement.scrollTop=0; //for chrome, firefox, ie and opera
+        $("main").animate({ scrollTop: 0 }, "fast");
     })
 }
 

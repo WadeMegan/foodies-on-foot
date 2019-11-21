@@ -14,13 +14,16 @@
 
 </head>
 <body>
+
     <nav class="navBar">
         <ul>
             <li class="name">Foodies on Foot</li>
             <li class='footIcon'><i class="fas fa-shoe-prints fa-2x"></i></li>
         </ul>
     </nav>
+
     <main>
+
         <section class="homePage">
             <div class="homePageFormContainer">
                 <h1><i class="fas fa-search-location"></i> Enter an address to find restaurants within walking distance:</h1>
@@ -50,10 +53,9 @@
             </div>
         </section>
 
-
         <section class="resultsPage">
+            
             <header>
-
                 <div class="buttonContainer">
                     <button class="newSearchButton"><i class="fas fa-search-location"></i>New Search</button>
                     <button class="carbonCalculations"><i class="fas fa-car-side"></i>Emissions Calculations</button>
@@ -62,25 +64,24 @@
             </header>
            
             <div class="allResults">
-                
+                <!--js will append results here-->
             </div>
-
-                     
+  
         </section>
 
         <section class="popUpContainer calculationsContainer">
             
             <div class="calcContentContainer">
                 <button class="xButton xButtonCalc">X</button>
-                <h2>How was your footprint calculated?</h2>
-                <p>Your carbon emissions were calculated with the assumption that your vehicle emits 357 grams/mile. This is the average for model year 2017 vehicles <a href="https://www.epa.gov/automotive-trends/highlights-automotive-trends-report">(SOURCE)</a>.</p>
+                <h2>How was your carbon footprint calculated?</h2>
+                <p>Your potential CO<sub>2</sub> emissions from driving were calculated with the assumption that your vehicle emits 357 grams/mile. This is the average for model year 2017 vehicles <a target="_blank" href="https://www.epa.gov/automotive-trends/highlights-automotive-trends-report">(source)</a>.</p>
             </div>
             
         </section>
     
     </main>
 
-    <div id="map"></div>
+    <div id="map"></div> <!--necessary for google api. not displayed.-->
 
     <footer>
         <img src="images/googleLogo.png" alt="powered by Google" class="poweredByGoogleImgFooter">
