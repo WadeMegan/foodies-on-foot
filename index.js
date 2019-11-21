@@ -7,8 +7,8 @@ var resultsCount=0;
 //only .homePage is visible on page load
 function pageLoad(){
     //$('.homePage').hide();
-    $('.resultsPage').hide();
-    $('.calculationsContainer').hide();
+    //$('.resultsPage').hide();
+    //$('.calculationsContainer').hide();
 }
 
 //MAKEINPUTAUTOCOMPLETE FUNCTION - uses google maps api to autocomplete an address #autocomplete 
