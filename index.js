@@ -3,13 +3,6 @@
 //global variable that keeps track of the number of results that get rendered
 var resultsCount=0;
 
-//PAGELOAD FUNCTION - hides .navBar, .resultsPage, and .calculationsContainer, so that 
-//only .homePage is visible on page load
-function pageLoad(){
-    //$('.homePage').hide();
-    //$('.resultsPage').hide();
-    //$('.calculationsContainer').hide();
-}
 
 //MAKEINPUTAUTOCOMPLETE FUNCTION - uses google maps api to autocomplete an address #autocomplete 
 //input field 
@@ -412,12 +405,12 @@ function resultsPopUpButtonClicked(placeId,id){
     $(`.${id}`).click(function(event){
         event.preventDefault();
         $(`.${placeId}`).show();
-        $('.allResults').hide();
+        $(".allResults").css("overflow-y", "hidden")
+        document.getElementById("toTopButton").style.zIndex = "1";
     })
 
     //calls xButtonResultClicked function
     xButtonResultClicked(placeId,id);
-
 }
 
 //XBUTTONRESULTCLICKED FUNCTION - if the .xButtonResult button is clicked, hides the popUpContainer
@@ -425,7 +418,8 @@ function xButtonResultClicked(placeId,id){
     $('.xButtonResult').click(function(event){
         event.preventDefault();
         $(`.${placeId}`).hide();
-        $('.allResults').show();
+        $(".allResults").css("overflow-y", "scroll")
+        document.getElementById("toTopButton").style.zIndex = "100";
    })
 }
 
@@ -477,7 +471,6 @@ function toTopButtonClicked(){
 
 //RENDERAPP FUNCTION - calls all functions necessary to render app
 function renderApp(){
-    pageLoad();
     makeInputAutocomplete();
     watchFormSubmit();   
     newSearchClicked(); 

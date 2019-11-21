@@ -151,6 +151,7 @@ footer{
     display:flex;
     color:grey;
     box-shadow:none;
+    cursor:pointer;
 }
 
 .formButtonContainer{
@@ -168,6 +169,7 @@ footer{
 
 #submitButton:hover, .reset:hover{
     background-color: #01488c;
+    cursor:pointer;
 }
 
 .reset{
@@ -212,6 +214,7 @@ form{
 
 .xButtonError:hover{
     background-color: #01488c;
+    cursor:pointer;
 }
 
 /* results page styling */
@@ -240,6 +243,7 @@ form{
 
 .newSearchButton:hover, .carbonCalculations:hover{
     background-color:#042e56;
+    cursor:pointer;
 }
 
 .buttonContainer{
@@ -305,6 +309,7 @@ header p{
 
 .moreInfoButton:hover{
     background-color: #01488c;
+    cursor:pointer;
 }
 
 /* comp view styling */
@@ -350,10 +355,11 @@ header p{
 /* to top button styling */
 
 .toTopButton{
+    z-index:100;
     display:none;
     position:fixed;
     right:10px;
-    z-index: 100; 
+    bottom:5px;
     border: none; 
     outline: none; 
     background-color:#042e56; 
@@ -475,7 +481,6 @@ header p{
 .extraInfoBox i{
     padding-right:15px;
 }
-
 
 .popUpTravel{
     display:flex;
