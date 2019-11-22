@@ -3,6 +3,7 @@
     padding:0;
     border:0;
     box-sizing: border-box;
+    background-color:#389583;
 }
 
 /* font stlying */
@@ -11,7 +12,7 @@ nav, .homePage h1, .calcContentContainer h2, .nameAndAddressContainer h2,.restNa
     font-family: 'Cabin', sans-serif;
 }
 
-.homePage form,header, .homePageError,.xButton, .calcContentContainer p, .nameAndAddressContainer p, .moreInfoButton, .travelInfo, .distanceInfoBox, .ratingBox, .emissionsInfoBox, .extraInfoBox {
+.homePage form,header, .homePageError,.xButton, .calcContentContainer p, .nameAndAddressContainer p, .moreInfoButton, .travelInfo, .distanceInfoBox, .ratingBox, .emissionsInfoBox, .extraInfoBox, form label {
     font-family: 'Roboto', sans-serif;
 }
 
@@ -142,7 +143,7 @@ footer{
 /* form styling */
 
 #autocomplete{
-    margin-top:15px;
+    margin-top:5px;
     margin-bottom:15px;
     padding-left:10px;
     border-radius:20px;
@@ -157,6 +158,12 @@ footer{
 .formButtonContainer{
     width:100%;
     display:flex;
+}
+
+form label{
+    margin-right:auto;
+    font-weight:bold;
+    width:100px;
 }
 
 #submitButton{
