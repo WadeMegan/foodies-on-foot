@@ -137,6 +137,9 @@ function getResults(resultLat, resultLong,userInput,form){
     var service = new google.maps.places.PlacesService(map);
 
     //callback function
+
+    var myPromise;
+
     var callback = function(result,status,pagination){
 
         //if no results for valid address, calls notifyUserResults function
@@ -152,10 +155,7 @@ function getResults(resultLat, resultLong,userInput,form){
         //if status is OK, loop through each of the nearby restaurants 
         if (status == google.maps.places.PlacesServiceStatus.OK){
 
-        
-
             var restaurantList = result;
-
 
             for (let i=0;i<restaurantList.length;i++){
                 var id = restaurantList[i].id;
@@ -168,8 +168,8 @@ function getResults(resultLat, resultLong,userInput,form){
                 sleep:2;
                 pagination.nextPage();
             }
+            
             showResultsPage();
-
         }
     }
 
@@ -241,6 +241,7 @@ function checkWalkingTime(restaurantList, center, placeId,id,userInput){
 
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(request,callback);
+
 }
 
 //LESSTHANTHIRTY FUNCTION - if walking time is less than 30 mins (1800 sec), will keep in result list, create a rating
@@ -260,7 +261,7 @@ function lessThanThirty(restaurantList, center,duration,durationMinutes, distanc
         //if restaurant has no ratings ... 
         else{
             var ratingShort = 'No Reviews';
-            //getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
+            getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
         }
      } 
 }
@@ -396,7 +397,7 @@ function renderResults(restaurantList, durationMinutes, distance, matrixDistance
         </div>`);
 
     //calls resultsPopUpButtonClicked
-    resultsPopUpButtonClicked(placeId,id);
+    resultsPopUpButtonClicked(placeId,id); 
 }
 
 //RESULTSPOPUPBUTTONCLICKED FUNCTION - if moreInfoButton is clicked (named using id), shows 
