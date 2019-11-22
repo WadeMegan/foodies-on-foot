@@ -168,7 +168,7 @@ function getResults(resultLat, resultLong,userInput,form){
                 sleep:2;
                 pagination.nextPage();
             }
-            
+
             showResultsPage();
         }
     }
@@ -319,7 +319,8 @@ function calculateFootprint(restaurantList, center,duration,durationMinutes, dis
 
 //ADDHEADER FUNCTION - adds html to header that informs user they are seeing results for the inputted address
 function addHeader(userInput){
-    $('.showingFor').html(`Showing ${resultsCount} results for ${userInput}.`)
+    $('.resultsCount').html(`${resultsCount}`);
+    $('.userInput').html(`${userInput}`);
 }
 
 //RENDERRESULTS FUNCTION - creates divs for each result and appends it to resultsPage section 

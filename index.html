@@ -7,7 +7,7 @@
     <title>Foodies on Foot</title>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css">
     <link rel="stylesheet" href="main.css">
-    <link href="https://fonts.googleapis.com/css?family=Cabin|Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cabin%7CRoboto&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
     <script src="https://kit.fontawesome.com/1fd945470a.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdh8UOq9nRl26mGXJu6tjVrRGlLskqiaA&libraries=places"></script>   
@@ -38,17 +38,17 @@
 
                 <div class="popUpContainer invalidAddressError homePageError hidden">
                     <button class="xButton xButtonError">X</button>
-                    <p>This isn't a valid address. Please enter a valid address and submit.</p>
+                    <h2>This isn't a valid address. Please enter a valid address and submit.</h2>
                 </div>
         
                 <div class="popUpContainer noInputError homePageError hidden">
                     <button class="xButton xButtonError">X</button>
-                    <p>Please enter a valid address before submitting.</p>
+                    <h2>Please enter a valid address before submitting.</h2>
                 </div>
         
                 <section class="popUpContainer noResultsNotification homePageError hidden">
                     <button class="xButton xButtonError">X</button>
-                    <p>Sorry, we didn't find any restaurants within walking distance from that address.</p>
+                    <h2>Sorry, we didn't find any restaurants within walking distance from that address.</h2>
                 </section>
             </div>
         </section>
@@ -60,7 +60,7 @@
                     <button class="newSearchButton"><i class="fas fa-search-location"></i>New Search</button>
                     <button class="carbonCalculations"><i class="fas fa-car-side"></i>Emissions Calculations</button>
                 </div>
-                <p class="showingFor"></p>
+                <h2 class="showingFor">Showing <span class="resultsCount"></span> results for <span class="userInput"></span></h2>
             </header>
            
             <div class="allResults">

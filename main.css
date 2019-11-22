@@ -39,7 +39,7 @@ form{
     line-height:28px;
 }
 
-.homePageError, header,.nameAndAddressContainer p, .moreInfoButton, .travelInfo, .calcContentContainer p, .popUpInfo p, .compBox p{
+.homePageError h2, header, header h2,.nameAndAddressContainer p, .moreInfoButton, .travelInfo, .calcContentContainer p, .popUpInfo p, .compBox p{
     font-size:16px;
     line-height:20px;
 }
@@ -256,7 +256,7 @@ form{
     margin-bottom:20px;
 }
 
-header p{
+header h2{
     margin-left:10px;
     margin-right:10px;
     color:grey;
