@@ -3,7 +3,6 @@
     padding:0;
     border:0;
     box-sizing: border-box;
-    background-color:#389583;
 }
 
 /* font stlying */
@@ -51,7 +50,7 @@ nav{
     position:fixed;
     top:0;
     width:100%;
-    background-color:#389583;
+    background-color:#297163;
     color:white;
     height:10vh;
     padding-left:10px;
@@ -90,7 +89,7 @@ main{
 /*footer*/
 
 footer{
-    background-color:#389583;
+    background-color:#297163;
     height:10vh;
     padding-left:10px;
     padding-right:10px;
@@ -241,11 +240,11 @@ form{
 /* header (includes buttons) styling */
 
 .newSearchButton, .carbonCalculations{
-    background-color:#389583;
+    background-color:#297163;
     color:white;
     width:50%;
     height:100%;
-    border:2px solid #308473;
+    border:3px solid #225f53;
 }
 
 .newSearchButton:hover, .carbonCalculations:hover{
@@ -395,7 +394,7 @@ header h2{
     width:80%;
     height:80%;
     padding:25px;
-    border:4px solid #308473;
+    border:4px solid #225f53;
 } 
 
 /* carbon calculations container styling */
@@ -408,7 +407,7 @@ header h2{
     background-repeat:no-repeat;
     background-size:cover;
     z-index:97;
-    box-shadow: 1000px 1000px 0px 2000px #389583;
+    box-shadow: 1000px 1000px 0px 2000px #297163;
     background-color:white;
     border-radius:20px;
 }
@@ -460,7 +459,7 @@ header h2{
     background-repeat:no-repeat;
     background-size:cover;
     z-index:97;
-    box-shadow: 1000px 1000px 0px 2000px #389583;
+    box-shadow: 1000px 1000px 0px 2000px #297163;
     border-radius:20px;
     background-color:white;
 }
