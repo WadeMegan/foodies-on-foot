@@ -3,6 +3,16 @@
 //global variable that keeps track of the number of results that get rendered
 var resultsCount=0;
 
+var store = [];
+
+
+//PAGELOAD FUNCTION - hides .navBar, .resultsPage, and .calculationsContainer, so that 
+//only .homePage is visible on page load
+function pageLoad(){
+    //$('.homePage').hide();
+    $('.resultsPage').hide();
+    $('.calculationsContainer').hide();
+}
 
 //MAKEINPUTAUTOCOMPLETE FUNCTION - uses google maps api to autocomplete an address #autocomplete 
 //input field 
@@ -79,10 +89,12 @@ function getCoordinates(userInput,form){
         if(status == 'ERROR'){
             alert('There was an error retrieving the data. Please check your internet connection or try again later.')
         }
+
     } 
 
     geocoder.geocode(results,callback);
 
+    
 
 }
 
@@ -152,15 +164,26 @@ function getResults(resultLat, resultLong,userInput,form){
         //if status is OK, loop through each of the nearby restaurants 
         if (status == google.maps.places.PlacesServiceStatus.OK){
 
-        
-
             var restaurantList = result;
-
+            var myPromise = [];
 
             for (let i=0;i<restaurantList.length;i++){
                 var id = restaurantList[i].id;
                 var placeId = restaurantList[i].place_id;
-                checkWalkingTime(restaurantList[i],center,placeId,id,userInput); //calls this function, which calculates the travel time for each restaurant
+               
+                myPromise[i] = new Promise(
+                    (resolve,reject) =>{
+                        if (done==true){
+                            resolve();
+                        }
+                        else{
+                            const reason = new Error('not complete');
+                            reject(reason);
+                        }
+                    });
+
+                checkWalkingTime(restaurantList[i],center,placeId,id,userInput, myPromise[i]); //calls this function, which calculates the travel time for each restaurant
+                var done = true;
             }
 
             //if more than 20 results, goes through next 20 results, up to 60 total
@@ -168,12 +191,34 @@ function getResults(resultLat, resultLong,userInput,form){
                 sleep:2;
                 pagination.nextPage();
             }
-            showResultsPage();
 
+
+            const execute = function(){
+                Promise.all(myPromise)
+                    .then(fulfilled => console.log('fulfilled'))
+                    .catch(error => console.log(myPromise));
+            }
+
+            execute();
+
+            showResultsPage();
         }
+        
     }
 
     service.nearbySearch(request, callback);
+    //console.log(store.length);
+    //rating(store);
+}
+
+function rating (store){
+    console.log('testing');
+    console.log(store);
+    console.log(store.length);
+    for (let x=0;x<store.length;x++){
+        checkRatings(store[x]);
+        console.log("test")
+    }
 }
 
 //NOTIFYUSERNORESULTS FUNCTION - if the user has given a valid address, but there are no results, 
@@ -200,7 +245,7 @@ function notifyUserNoResults(form){
 
 //CHECKWALKINGTIME FUNCTION - uses google distance matrix api to determine the amount of time it would 
 //take to walk from user address to restaurant - done for each restaurant 
-function checkWalkingTime(restaurantList, center, placeId,id,userInput){
+function checkWalkingTime(restaurantList, center, placeId,id,userInput,myPromise){
 
     var origin = center;
     var destination = restaurantList.vicinity;
@@ -233,7 +278,7 @@ function checkWalkingTime(restaurantList, center, placeId,id,userInput){
                 var distance = matrixDistanceResult.rows[0].elements[0].distance.text;
                 
                 //calls lessThanThirty function, which takes travel info and determines if walk time is less than 30 min
-                lessThanThirty(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,placeId,id,userInput);
+                lessThanThirty(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,placeId,id,userInput, myPromise);
             }
 
         }
@@ -241,36 +286,59 @@ function checkWalkingTime(restaurantList, center, placeId,id,userInput){
 
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(request,callback);
+
+
 }
 
 //LESSTHANTHIRTY FUNCTION - if walking time is less than 30 mins (1800 sec), will keep in result list, create a rating
 //variable, and calculate the driving distance with getDrivingDistance function
-function lessThanThirty(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,placeId,id,userInput){
+function lessThanThirty(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,placeId,id,userInput, myPromise){
     
     if(duration<=1800){ 
+        
+        //add key/value pair for duration to restaurantList object and push onto store array
         restaurantList.duration = duration;
+        restaurantList.minutes = durationMinutes;
+        restaurantList.distance = distance;
+        store.push(restaurantList);
+        sortByDuration(store);
+    } 
+}
+
+//SORTBYDURATION FUNCTION - sorts array by duration in ascending order
+function sortByDuration(store){
+    var sorted = store.sort(function(a,b){
+        var keyA = a.duration;
+        var keyB = b.duration;
+        return(keyA-keyB);
+    })
+}
+
+
+
+
+function checkRatings(store){
 
         //if restaurant has ratings ... 
         if(restaurantList.hasOwnProperty('rating')){
             //remove decimal places of rating number
-            var ratingLong = restaurantList.rating;
-            var ratingShort = `Rating: ${ratingLong.toFixed(1)}/5`; 
-            getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
+            var ratingLong = store.rating;
+            var ratingShort = `Rating: ${store.toFixed(1)}/5`; 
+            getDrivingDistance(store, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
         }
         //if restaurant has no ratings ... 
         else{
             var ratingShort = 'No Reviews';
-            //getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
+            getDrivingDistance(store, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
         }
-     } 
-}
+} 
 
 
 //GETDRIVINGDISTANCE FUNCTION - for each remaining result (less than 30 min walk), calculate the drive 
 //distance using google maps distance matrix api
-function getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput){
+function getDrivingDistance(store, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput){
     var origin = center;
-    var destination = restaurantList.vicinity;
+    var destination = store.vicinity;
     
     var request={
         origins: [origin],
@@ -290,7 +358,7 @@ function getDrivingDistance(restaurantList, center,duration,durationMinutes, dis
             var driveDistanceMeters = results.rows[0].elements[0].distance.value;
             var driveDistanceMiles = driveDistanceMeters/1609.344;
             //calls calculateFootprint function 
-            calculateFootprint(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort,driveDistanceMiles,placeId,id,userInput);
+            calculateFootprint(store, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort,driveDistanceMiles,placeId,id,userInput);
         }
     } 
 
@@ -300,7 +368,7 @@ function getDrivingDistance(restaurantList, center,duration,durationMinutes, dis
 
 
 //CALCULATESFOOTPRINT FUNCTION - calculates carbon emission in grams using driving distance
-function calculateFootprint(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort,driveDistanceMiles, placeId,id,userInput){
+function calculateFootprint(store, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort,driveDistanceMiles, placeId,id,userInput){
     //adds 1 to resultsCount variable for each result that is rendered
     resultsCount++;
     
@@ -313,7 +381,7 @@ function calculateFootprint(restaurantList, center,duration,durationMinutes, dis
     var emission = emissionLong.toFixed(1);  
     
     //finally... renders the results
-    renderResults(restaurantList, durationMinutes, distance, matrixDistanceResult,ratingShort,emission,placeId,id)
+    renderResults(store, durationMinutes, distance, matrixDistanceResult,ratingShort,emission,placeId,id)
 }
 
 //ADDHEADER FUNCTION - adds html to header that informs user they are seeing results for the inputted address
@@ -322,7 +390,7 @@ function addHeader(userInput){
 }
 
 //RENDERRESULTS FUNCTION - creates divs for each result and appends it to resultsPage section 
-function renderResults(restaurantList, durationMinutes, distance, matrixDistanceResult,ratingShort,emission,placeId,id){
+function renderResults(store, durationMinutes, distance, matrixDistanceResult,ratingShort,emission,placeId,id){
     //includes separate divs for phoneView, compView, and popUpContainer
     $('.allResults').append(
         `<div class="resultContainer"> 
@@ -331,8 +399,8 @@ function renderResults(restaurantList, durationMinutes, distance, matrixDistance
          
                 <div class='mainInfoContainer'>
                     <div class="nameAndAddressContainer">
-                        <h2>${restaurantList.name}</h2>
-                        <p class="addressPhone">${restaurantList.vicinity}</p>
+                        <h2>${store.name}</h2>
+                        <p class="addressPhone">${store.vicinity}</p>
                     </div>
                     <button class="${id} moreInfoButton">More Info</button>
                 </div>
@@ -347,11 +415,11 @@ function renderResults(restaurantList, durationMinutes, distance, matrixDistance
             <div class="compView">
             
                 <section class="compBox restNameBox">
-                    <h2>${restaurantList.name}</h2>
+                    <h2>${store.name}</h2>
                 </section>  
                 <section class="compBox distanceInfoBox">
                     <i class="fas fa-map-marker-alt"></i>
-                    <p>${restaurantList.vicinity}</p>
+                    <p>${store.vicinity}</p>
                     <p>${distance} away</p>
                 </section>
                 <section class="compBox ratingBox">
@@ -370,24 +438,24 @@ function renderResults(restaurantList, durationMinutes, distance, matrixDistance
         `<div class = "${placeId} popUpContainer popUpResult hidden">
             <div class="popUpInfo">
                 <button class="xButton xButtonResult">X</button>
-                <h2>${restaurantList.name}</h2>
+                <h2>${store.name}</h2>
                 <div class="extraInfoBox">
-                    <div class="infoBullet">
+                    <div>
                         <i class="fas fa-map-marker-alt"></i>
-                        <p>${restaurantList.vicinity}</p>
+                        <p>${store.vicinity}</p>
                     </div>
-                    <div class="infoBullet">
+                    <div>
                         <i class="fas fa-star"></i>
                         <p>${ratingShort}</p>
                     </div>
-                    <div class="infoBullet">
+                    <div>
                         <i class="fas fa-walking"></i>
                         <div class="popUpTravel">
                             <p>${durationMinutes} away</p>  
                             <p>${distance} away</p>
                         </div>
                     </div>
-                    <div class="infoBullet">
+                    <div>
                         <i class="fas fa-globe-americas"></i>
                         <p>Save ${emission} grams of CO<sub>2</sub> emissions by walking instead of driving!</p>
                     </div>
@@ -405,12 +473,12 @@ function resultsPopUpButtonClicked(placeId,id){
     $(`.${id}`).click(function(event){
         event.preventDefault();
         $(`.${placeId}`).show();
-        $(".allResults").css("overflow-y", "hidden")
-        document.getElementById("toTopButton").style.zIndex = "1";
+        $('.allResults').hide();
     })
 
     //calls xButtonResultClicked function
     xButtonResultClicked(placeId,id);
+
 }
 
 //XBUTTONRESULTCLICKED FUNCTION - if the .xButtonResult button is clicked, hides the popUpContainer
@@ -418,8 +486,7 @@ function xButtonResultClicked(placeId,id){
     $('.xButtonResult').click(function(event){
         event.preventDefault();
         $(`.${placeId}`).hide();
-        $(".allResults").css("overflow-y", "scroll")
-        document.getElementById("toTopButton").style.zIndex = "100";
+        $('.allResults').show();
    })
 }
 
@@ -457,7 +524,7 @@ function xButtonClicked(){
 
 //TOTOP FUNCTION - shows .toTopButton when user scrolls from top of doc
 function toTop(){
-$("main").scroll(function(){
+$(window).scroll(function(){
     $('.toTopButton').toggleClass('scrolled', $(this).scrollTop() > 200);
 });
 }
@@ -465,12 +532,14 @@ $("main").scroll(function(){
 //TOTOPBUTTONCLICKED FUNCTION - if .toTopButton is clicked, take user to top of page
 function toTopButtonClicked(){
     $('.toTopButton').click(function(event){
-        $("main").animate({ scrollTop: 0 }, "fast");
+        document.body.scrollTop=0; //for safari
+        document.documentElement.scrollTop=0; //for chrome, firefox, ie and opera
     })
 }
 
 //RENDERAPP FUNCTION - calls all functions necessary to render app
 function renderApp(){
+    pageLoad();
     makeInputAutocomplete();
     watchFormSubmit();   
     newSearchClicked(); 
