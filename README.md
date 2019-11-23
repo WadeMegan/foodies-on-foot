@@ -8,13 +8,13 @@ A live version of the app can be accessed [here](https://wademegan.github.io/foo
 
 Foodies on Foot allows users to search for up to 60 restaurants within walking distance from the user's given location. The app also shows the user how many grams of carbon dioxide emissions they are saving by walking to the restaurant instead of driving. 
 
-###Home Page: 
+### Home Page: 
 ![Home Page](https://i.imgur.com/auOBiK0.png)
 
-###Results Page: 
+### Results Page: 
 ![Results Page](https://i.imgur.com/CMDuEWV.png)
 
-###Emissions Calculations Popup:
+### Emissions Calculations Popup:
 ![Emissions Calculations Popup](https://i.imgur.com/YzeL4la.png)
 
 ## Goal
