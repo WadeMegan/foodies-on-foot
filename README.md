@@ -34,7 +34,7 @@ The goal of Foodies on Foot is to make it easier for users to discover nearby re
 * Google Maps Nearby Places
 * Google Maps Distance Matrix
 
-## Browser Compatibility:
+## Browser Compatibility
 
 ### Google Maps JavaScript APIs are supported on: 
 * Current Microsoft Edge Version
