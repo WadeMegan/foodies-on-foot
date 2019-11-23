@@ -44,12 +44,12 @@ function submitButtonDisabled(form){
 //GETCOORDINATES FUNCTION - takes the address (userInput) and obtains its lat and long coordinates
 //using google maps geocoder API
 function getCoordinates(userInput,form){
-    var geocoder = new google.maps.Geocoder();
-    var results = {
+    let geocoder = new google.maps.Geocoder();
+    let results = {
         address: userInput
     };
     //callback function
-    var callback = function(results,status){ 
+    let callback = function(results,status){ 
         //if user does not provide any input, calls noInputGiven function
         if (status == google.maps.places.PlacesServiceStatus.INVALID_REQUEST){
             noInputGiven();
@@ -61,8 +61,8 @@ function getCoordinates(userInput,form){
         //if status is OK (valid address & no errors), obtain lat and long coordinates 
         if (status == google.maps.places.PlacesServiceStatus.OK){
             submitButtonDisabled(form);
-            var resultLat = results[0].geometry.location.lat();
-            var resultLong=  results[0].geometry.location.lng(); 
+            let resultLat = results[0].geometry.location.lat();
+            let resultLong=  results[0].geometry.location.lng(); 
             //calls getResults function, which will get list of nearby restaurants
             getResults(resultLat, resultLong,userInput,form);
         }
@@ -106,20 +106,20 @@ function showResultsPage(){
 //google maps nearby places api
 function getResults(resultLat, resultLong,userInput,form){
     //the map variable must be created and is present in index.html, but is not displayed
-    var map;
-    var center = {lat: resultLat, lng: resultLong};
+    let map;
+    let center = {lat: resultLat, lng: resultLong};
     map = new google.maps.Map(document.getElementById('map'), {
         center:center, //center of map is lat and long for input address
         zoom:13 //arbitrary number, since not displaying map
     });
-    var request = {
+    let request = {
         location: center,
         rankBy: google.maps.places.RankBy.DISTANCE,
         types: ['restaurant'] //search for restaurants only 
     };
-    var service = new google.maps.places.PlacesService(map);
+    let service = new google.maps.places.PlacesService(map);
     //callback function
-    var callback = function(result,status,pagination){
+    let callback = function(result,status,pagination){
         //if no results for valid address, calls notifyUserResults function
         if (status == google.maps.places.PlacesServiceStatus.ZERO_RESULTS){
             notifyUserNoResults(form);
@@ -130,10 +130,10 @@ function getResults(resultLat, resultLong,userInput,form){
         }
         //if status is OK, loop through each of the nearby restaurants 
         if (status == google.maps.places.PlacesServiceStatus.OK){
-            var restaurantList = result;
+            let restaurantList = result;
             for (let i=0;i<restaurantList.length;i++){
-                var id = restaurantList[i].id;
-                var placeId = restaurantList[i].place_id;
+                let id = restaurantList[i].id;
+                let placeId = restaurantList[i].place_id;
                 checkWalkingTime(restaurantList[i],center,placeId,id,userInput); //calls this function, which calculates the travel time for each restaurant
             }
             //if more than 20 results, goes through next 20 results, up to 60 total
@@ -169,16 +169,16 @@ function notifyUserNoResults(form){
 //CHECKWALKINGTIME FUNCTION - uses google distance matrix api to determine the amount of time it would 
 //take to walk from user address to restaurant - done for each restaurant 
 function checkWalkingTime(restaurantList, center, placeId,id,userInput){
-    var origin = center;
-    var destination = restaurantList.vicinity;
-    var request={
+    let origin = center;
+    let destination = restaurantList.vicinity;
+    let request={
         origins: [origin],
         destinations: [destination],
         travelMode: 'WALKING',
         unitSystem: google.maps.UnitSystem.IMPERIAL
     }
     //callback function
-    var callback = function(results,status){
+    let callback = function(results,status){
         //if error status, log to console
         if(status == 'ERROR'){
             console.log('There was an error retrieving the walking time data.')
@@ -188,16 +188,16 @@ function checkWalkingTime(restaurantList, center, placeId,id,userInput){
             //checks that each result has travel time calculated - rare: in some cases, restaurant does not have valid address
             //in system, which throws an error
             if(results.rows[0].elements[0].status=='OK'){
-                var matrixDistanceResult = results;
-                var duration = matrixDistanceResult.rows[0].elements[0].duration.value;
-                var durationMinutes = matrixDistanceResult.rows[0].elements[0].duration.text;
-                var distance = matrixDistanceResult.rows[0].elements[0].distance.text;
+                let matrixDistanceResult = results;
+                let duration = matrixDistanceResult.rows[0].elements[0].duration.value;
+                let durationMinutes = matrixDistanceResult.rows[0].elements[0].duration.text;
+                let distance = matrixDistanceResult.rows[0].elements[0].distance.text;
                 //calls lessThanThirty function, which takes travel info and determines if walk time is less than 30 min
                 lessThanThirty(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,placeId,id,userInput);
             }
         }
     }
-    var service = new google.maps.DistanceMatrixService();
+    let service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(request,callback);
 }
 
@@ -209,13 +209,13 @@ function lessThanThirty(restaurantList, center,duration,durationMinutes, distanc
         //if restaurant has ratings ... 
         if(restaurantList.hasOwnProperty('rating')){
             //remove decimal places of rating number
-            var ratingLong = restaurantList.rating;
-            var ratingShort = `Rating: ${ratingLong.toFixed(1)}/5`; 
+            let ratingLong = restaurantList.rating;
+            let ratingShort = `Rating: ${ratingLong.toFixed(1)}/5`; 
             getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
         }
         //if restaurant has no ratings ... 
         else{
-            var ratingShort = 'No Reviews';
+            let ratingShort = 'No Reviews';
             getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput);
         }
      } 
@@ -224,15 +224,15 @@ function lessThanThirty(restaurantList, center,duration,durationMinutes, distanc
 //GETDRIVINGDISTANCE FUNCTION - for each remaining result (less than 30 min walk), calculate the drive 
 //distance using google maps distance matrix api
 function getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput){
-    var origin = center;
-    var destination = restaurantList.vicinity;  
-    var request={
+    let origin = center;
+    let destination = restaurantList.vicinity;  
+    let request={
         origins: [origin],
         destinations: [destination],
         travelMode: 'DRIVING'
     }
     //callback function
-    var callback = function(results,status){
+    let callback = function(results,status){
         //if there is an error, log to console
          if(status == 'ERROR'){
             console.log('There was an error retrieving the driving distance data.')
@@ -240,13 +240,13 @@ function getDrivingDistance(restaurantList, center,duration,durationMinutes, dis
         //if status is OK ... 
         if(status == 'OK'){
             //convert from meter to miles 
-            var driveDistanceMeters = results.rows[0].elements[0].distance.value;
-            var driveDistanceMiles = driveDistanceMeters/1609.344;
+            let driveDistanceMeters = results.rows[0].elements[0].distance.value;
+            let driveDistanceMiles = driveDistanceMeters/1609.344;
             //calls calculateFootprint function 
             calculateFootprint(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort,driveDistanceMiles,placeId,id,userInput);
         }
     } 
-    var service = new google.maps.DistanceMatrixService();
+    let service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(request,callback);
 }
 
@@ -256,9 +256,9 @@ function calculateFootprint(restaurantList, center,duration,durationMinutes, dis
     resultsCount++;
     //calls addHeader function 
     addHeader(userInput);
-    var emissionLong = driveDistanceMiles * 357;
+    let emissionLong = driveDistanceMiles * 357;
     //remove decimal places of emission calculation
-    var emission = emissionLong.toFixed(1);  
+    let emission = emissionLong.toFixed(1);  
     //finally... renders the results
     renderResults(restaurantList, durationMinutes, distance, matrixDistanceResult,ratingShort,emission,placeId,id)
 }
