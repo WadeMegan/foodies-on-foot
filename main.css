@@ -7,11 +7,11 @@
 
 /* font stlying */
 
-nav, .homePage h1, .calcContentContainer h2, .nameAndAddressContainer h2,.restNameBox,.popUpInfo h2{
+nav, .homePage h1, .calcContentContainer h2, .nameAndAddressContainer h2, .restNameBox, .popUpInfo h2{
     font-family: 'Cabin', sans-serif;
 }
 
-.homePage form,header, .homePageError,.xButton, .calcContentContainer p, .nameAndAddressContainer p, .moreInfoButton, .travelInfo, .distanceInfoBox, .ratingBox, .emissionsInfoBox, .extraInfoBox, form label {
+.homePage form, header, .homePageError, .xButton, .calcContentContainer p, .nameAndAddressContainer p, .moreInfoButton, .travelInfo, .distanceInfoBox, .ratingBox, .emissionsInfoBox, .extraInfoBox, form label{
     font-family: 'Roboto', sans-serif;
 }
 
@@ -34,12 +34,12 @@ form{
     font-size:18px;
 }
 
-.nameAndAddressContainer h2,.popUpInfo h2{
+.nameAndAddressContainer h2, .popUpInfo h2{
     font-size:22px;
     line-height:28px;
 }
 
-.homePageError h2, header, header h2,.nameAndAddressContainer p, .moreInfoButton, .travelInfo, .calcContentContainer p, .popUpInfo p, .compBox p{
+.homePageError h2, header, header h2, .nameAndAddressContainer p, .moreInfoButton, .travelInfo, .calcContentContainer p, .popUpInfo p, .compBox p{
     font-size:16px;
     line-height:20px;
 }
@@ -115,7 +115,7 @@ footer{
     justify-content:center;
 }
 
-.hidden {   /* error messages are hidden */
+.hidden{   /* error messages are hidden */
     display:none;
 }
  
@@ -318,7 +318,7 @@ header h2{
     cursor:pointer;
 }
 
-/* comp view styling */
+/* computer view styling */
 
 .compView{
     display:none;
@@ -387,7 +387,7 @@ header h2{
 
 /* pop up container (carbon calculations and results) styling */
 
-.calculationsContainer,.popUpResult{
+.calculationsContainer, .popUpResult{
     position:fixed;
     top:10%;
     left:10%;
@@ -432,7 +432,7 @@ header h2{
 
 /* x button (carbon calculations and results) styling */
 
-.xButtonCalc,.xButtonResult{
+.xButtonCalc, .xButtonResult{
     position:absolute;
     top:5px;
     right:5px;
@@ -543,8 +543,7 @@ header h2{
         height:120px;
         margin:10px;
     }
-
-    .calculationsContainer,.popUpResult{
+    .calculationsContainer, .popUpResult{
         padding:75px;
     } 
 }
@@ -552,7 +551,7 @@ header h2{
 /*styling for screens greater than 900px wide*/
 @media only screen and (min-width: 900px) {
     /*make address appear under restaurant name*/
-    .calculationsContainer,.popUpResult{
+    .calculationsContainer, .popUpResult{
         padding:90px;
     } 
 }
@@ -570,7 +569,7 @@ header h2{
 /*styling for screens greater than 1100px wide*/
 @media only screen and (min-width: 1100px) {
     /*make address appear under restaurant name*/
-    .calculationsContainer,.popUpResult{
+    .calculationsContainer, .popUpResult{
         padding:110px;
     } 
 }
@@ -584,7 +583,7 @@ header h2{
     #autocomplete, .reset, #submitButton{
         height:50px;
     }
-    .calculationsContainer,.popUpResult{
+    .calculationsContainer, .popUpResult{
         padding:250px;
     } 
 }

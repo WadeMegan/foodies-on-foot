@@ -3,7 +3,6 @@
 //global variable that keeps track of the number of results that get rendered
 var resultsCount=0;
 
-
 //MAKEINPUTAUTOCOMPLETE FUNCTION - uses google maps api to autocomplete an address #autocomplete 
 //input field 
 function makeInputAutocomplete(){
@@ -13,34 +12,31 @@ function makeInputAutocomplete(){
 //WATCHFORMSUBMIT FUNCTION - when form is submitted, creates the variable userInput and sets it equal
 //to the address input
 function watchFormSubmit(){
-    $("form").submit(function(event){
+    $('form').submit(function(event){
         event.preventDefault();
         let userInput = $('#autocomplete').val();
-        
         //calls getCoordinates function, which will take input and get the coordinates
         getCoordinates(userInput,this);
     })
 }
-
 
 //SUBMITFUNCTIONDISABLED FUNCTION - when the user clicks submit button and disables it,
 //creates a reset button
 function submitButtonDisabled(form){
     //disable submit button so user cannot double click
     form.submit.disabled=true;
-    form.submit.value="Please wait...";
+    form.submit.value='Please wait...';
     $('.formButtonContainer').append('<input class="reset" type="button" value="Reset">');
-    form.submit.style.width="50%";
-
+    form.submit.style.width='50%';
     //when the reset button is clicked, reset the form, undisable submit button 
     //and remove reset button
     $('.reset').click(function(event){
         event.preventDefault();
         form.reset();
         form.submit.disabled=false;
-        form.submit.value="Submit";
+        form.submit.value='Submit';
         $('.reset').remove();
-        form.submit.style.width="100%";
+        form.submit.style.width='100%';
     })
 }
 
@@ -51,21 +47,17 @@ function getCoordinates(userInput,form){
     var geocoder = new google.maps.Geocoder();
     var results = {
         address: userInput
-    }
-    
+    };
     //callback function
     var callback = function(results,status){ 
-    
         //if user does not provide any input, calls noInputGiven function
         if (status == google.maps.places.PlacesServiceStatus.INVALID_REQUEST){
             noInputGiven();
         }
-
         //if the user provides an input, but it is not a valid address, calls invalidAddressGiven function
         if (status == google.maps.places.PlacesServiceStatus.ZERO_RESULTS){
             invalidAddressGiven(form);
         }
-
         //if status is OK (valid address & no errors), obtain lat and long coordinates 
         if (status == google.maps.places.PlacesServiceStatus.OK){
             submitButtonDisabled(form);
@@ -74,16 +66,12 @@ function getCoordinates(userInput,form){
             //calls getResults function, which will get list of nearby restaurants
             getResults(resultLat, resultLong,userInput,form);
         }
-       
         //if there is an error, alert the user
         if(status == 'ERROR'){
             alert('There was an error retrieving the data. Please check your internet connection or try again later.')
         }
     } 
-
     geocoder.geocode(results,callback);
-
-
 }
 
 //NOINPUTGIVEN FUNCTION - if the user presses submit without any input, shows the .noInputError message
@@ -117,80 +105,60 @@ function showResultsPage(){
 //GETRESULTS FUNCTION - using lat and long coordinates, gets list of nearby restaurants using 
 //google maps nearby places api
 function getResults(resultLat, resultLong,userInput,form){
-
     //the map variable must be created and is present in index.html, but is not displayed
     var map;
     var center = {lat: resultLat, lng: resultLong};
-
-
     map = new google.maps.Map(document.getElementById('map'), {
         center:center, //center of map is lat and long for input address
         zoom:13 //arbitrary number, since not displaying map
     });
-
     var request = {
         location: center,
         rankBy: google.maps.places.RankBy.DISTANCE,
         types: ['restaurant'] //search for restaurants only 
     };
-
     var service = new google.maps.places.PlacesService(map);
-
     //callback function
-
-    var myPromise;
-
     var callback = function(result,status,pagination){
-
         //if no results for valid address, calls notifyUserResults function
         if (status == google.maps.places.PlacesServiceStatus.ZERO_RESULTS){
             notifyUserNoResults(form);
         }
-
         //if there is an error, alert the user
         if(status == 'ERROR'){
             alert('There was an error retrieving the data. Please check your internet connection or try again later.')
         }
-
         //if status is OK, loop through each of the nearby restaurants 
         if (status == google.maps.places.PlacesServiceStatus.OK){
-
             var restaurantList = result;
-
             for (let i=0;i<restaurantList.length;i++){
                 var id = restaurantList[i].id;
                 var placeId = restaurantList[i].place_id;
                 checkWalkingTime(restaurantList[i],center,placeId,id,userInput); //calls this function, which calculates the travel time for each restaurant
             }
-
             //if more than 20 results, goes through next 20 results, up to 60 total
             if (pagination.hasNextPage){
                 sleep:2;
                 pagination.nextPage();
             }
-
             showResultsPage();
         }
     }
-
     service.nearbySearch(request, callback);
 }
 
 //NOTIFYUSERNORESULTS FUNCTION - if the user has given a valid address, but there are no results, 
 //show .noResultsNotification on home page
 function notifyUserNoResults(form){
-
     //undisable submit, remove reset button
     form.submit.disabled=false;
-    form.submit.value="Submit";
+    form.submit.value='Submit';
     $('.reset').remove();
-    form.submit.style.width="100%";
-
+    form.submit.style.width='100%';
     $('.noResultsNotification').show();
     //hides any other error messages on home page
     $('.noInputError').hide();
     $('.invalidAddressError').hide();
-
     //reset form when xButton is clicked
     $('.xButtonError').click(function(event){
         event.preventDefault();
@@ -201,56 +169,43 @@ function notifyUserNoResults(form){
 //CHECKWALKINGTIME FUNCTION - uses google distance matrix api to determine the amount of time it would 
 //take to walk from user address to restaurant - done for each restaurant 
 function checkWalkingTime(restaurantList, center, placeId,id,userInput){
-
     var origin = center;
     var destination = restaurantList.vicinity;
-    
     var request={
         origins: [origin],
         destinations: [destination],
         travelMode: 'WALKING',
-        unitSystem: google.maps.UnitSystem.IMPERIAL,
+        unitSystem: google.maps.UnitSystem.IMPERIAL
     }
-
     //callback function
     var callback = function(results,status){
-
-         //if error status, log to console
-         if(status == 'ERROR'){
+        //if error status, log to console
+        if(status == 'ERROR'){
             console.log('There was an error retrieving the walking time data.')
         }
-
         //if status is OK, gets walking duration 
         if(status == 'OK'){
             //checks that each result has travel time calculated - rare: in some cases, restaurant does not have valid address
             //in system, which throws an error
             if(results.rows[0].elements[0].status=='OK'){
-            
                 var matrixDistanceResult = results;
-
                 var duration = matrixDistanceResult.rows[0].elements[0].duration.value;
                 var durationMinutes = matrixDistanceResult.rows[0].elements[0].duration.text;
                 var distance = matrixDistanceResult.rows[0].elements[0].distance.text;
-                
                 //calls lessThanThirty function, which takes travel info and determines if walk time is less than 30 min
                 lessThanThirty(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,placeId,id,userInput);
             }
-
         }
     }
-
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(request,callback);
-
 }
 
 //LESSTHANTHIRTY FUNCTION - if walking time is less than 30 mins (1800 sec), will keep in result list, create a rating
 //variable, and calculate the driving distance with getDrivingDistance function
 function lessThanThirty(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,placeId,id,userInput){
-    
     if(duration<=1800){ 
         restaurantList.duration = duration;
-
         //if restaurant has ratings ... 
         if(restaurantList.hasOwnProperty('rating')){
             //remove decimal places of rating number
@@ -266,21 +221,18 @@ function lessThanThirty(restaurantList, center,duration,durationMinutes, distanc
      } 
 }
 
-
 //GETDRIVINGDISTANCE FUNCTION - for each remaining result (less than 30 min walk), calculate the drive 
 //distance using google maps distance matrix api
 function getDrivingDistance(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort, placeId,id,userInput){
     var origin = center;
-    var destination = restaurantList.vicinity;
-    
+    var destination = restaurantList.vicinity;  
     var request={
         origins: [origin],
         destinations: [destination],
-        travelMode: 'DRIVING',
+        travelMode: 'DRIVING'
     }
-
+    //callback function
     var callback = function(results,status){
-        
         //if there is an error, log to console
          if(status == 'ERROR'){
             console.log('There was an error retrieving the driving distance data.')
@@ -294,25 +246,19 @@ function getDrivingDistance(restaurantList, center,duration,durationMinutes, dis
             calculateFootprint(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort,driveDistanceMiles,placeId,id,userInput);
         }
     } 
-
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(request,callback);
 }
-
 
 //CALCULATESFOOTPRINT FUNCTION - calculates carbon emission in grams using driving distance
 function calculateFootprint(restaurantList, center,duration,durationMinutes, distance, matrixDistanceResult,ratingShort,driveDistanceMiles, placeId,id,userInput){
     //adds 1 to resultsCount variable for each result that is rendered
     resultsCount++;
-    
     //calls addHeader function 
     addHeader(userInput);
-
     var emissionLong = driveDistanceMiles * 357;
-  
     //remove decimal places of emission calculation
     var emission = emissionLong.toFixed(1);  
-    
     //finally... renders the results
     renderResults(restaurantList, durationMinutes, distance, matrixDistanceResult,ratingShort,emission,placeId,id)
 }
@@ -328,9 +274,7 @@ function renderResults(restaurantList, durationMinutes, distance, matrixDistance
     //includes separate divs for phoneView, compView, and popUpContainer
     $('.allResults').append(
         `<div class="resultContainer"> 
-            
             <div class="phoneView">
-         
                 <div class='mainInfoContainer'>
                     <div class="nameAndAddressContainer">
                         <h2>${restaurantList.name}</h2>
@@ -338,16 +282,12 @@ function renderResults(restaurantList, durationMinutes, distance, matrixDistance
                     </div>
                     <button class="${id} moreInfoButton">More Info</button>
                 </div>
-                
                 <div class='travelInfo'>
                     <p>${durationMinutes} away <i class="fas fa-walking"></i></p> 
                     <p class="carbonInfo">Save ${emission} grams of CO<sub>2</sub> emissions by walking <i class="fas fa-globe-americas"></i></p>
-                </div>
-                             
+                </div>        
             </div>
-
             <div class="compView">
-            
                 <section class="compBox restNameBox">
                     <h2>${restaurantList.name}</h2>
                 </section>  
@@ -364,10 +304,8 @@ function renderResults(restaurantList, durationMinutes, distance, matrixDistance
                     <p>${durationMinutes} away <i class="fas fa-walking"></i></p> 
                     <p class="carbonInfo">Save ${emission} grams of CO<sub>2</sub> emissions by walking <i class="fas fa-globe-americas"></i></p>
                 </section>
-
             </div>
         </div>`);
-        
     $('.resultsPage').append(
         `<div class = "${placeId} popUpContainer popUpResult hidden">
             <div class="popUpInfo">
@@ -396,8 +334,6 @@ function renderResults(restaurantList, durationMinutes, distance, matrixDistance
                 </div>
             </div>
         </div>`);
-
-    //calls resultsPopUpButtonClicked
     resultsPopUpButtonClicked(placeId,id); 
 }
 
@@ -407,10 +343,9 @@ function resultsPopUpButtonClicked(placeId,id){
     $(`.${id}`).click(function(event){
         event.preventDefault();
         $(`.${placeId}`).show();
-        $(".allResults").css("overflow-y", "hidden")
-        document.getElementById("toTopButton").style.zIndex = "1";
+        $('.allResults').css('overflow-y', 'hidden')
+        document.getElementById('toTopButton').style.zIndex = '1';
     })
-
     //calls xButtonResultClicked function
     xButtonResultClicked(placeId,id);
 }
@@ -420,8 +355,8 @@ function xButtonResultClicked(placeId,id){
     $('.xButtonResult').click(function(event){
         event.preventDefault();
         $(`.${placeId}`).hide();
-        $(".allResults").css("overflow-y", "scroll")
-        document.getElementById("toTopButton").style.zIndex = "100";
+        $('.allResults').css('overflow-y', 'scroll')
+        document.getElementById('toTopButton').style.zIndex = '100';
    })
 }
 
@@ -467,7 +402,7 @@ $("main").scroll(function(){
 //TOTOPBUTTONCLICKED FUNCTION - if .toTopButton is clicked, take user to top of page
 function toTopButtonClicked(){
     $('.toTopButton').click(function(event){
-        $("main").animate({ scrollTop: 0 }, "fast");
+        $('main').animate({ scrollTop: 0 }, 'fast');
     })
 }
 

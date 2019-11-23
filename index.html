@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Foodies on Foot</title>
+    <meta name="description" content="Returns a list of restaurants within walking distance.">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css">
     <link rel="stylesheet" href="main.css">
     <link href="https://fonts.googleapis.com/css?family=Cabin%7CRoboto&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
     <script src="https://kit.fontawesome.com/1fd945470a.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdh8UOq9nRl26mGXJu6tjVrRGlLskqiaA&libraries=places"></script>   
-
 </head>
-<body>
 
+<body>
     <nav class="navBar">
         <ul>
             <li class="name">Foodies on Foot</li>
-            <li class='footIcon'><i class="fas fa-shoe-prints fa-2x"></i></li>
+            <li class="footIcon"><i class="fas fa-shoe-prints fa-2x"></i></li>
         </ul>
     </nav>
-
     <main>
-
         <section class="homePage">
             <div class="homePageFormContainer">
                 <h1><i class="fas fa-search-location"></i> Enter an address to find restaurants within walking distance.</h1>
@@ -31,30 +30,24 @@
                     <label for="autocomplete" id="autocompleteLabel">Search:</label>
                     <input type="text" id="autocomplete">
                     <div class="formButtonContainer">
-                        <input name='submit' type="submit" id="submitButton" value="Submit">
+                        <input name="submit" type="submit" id="submitButton" value="Submit">
                     </div>
-                    
                 </form>
-
                 <div class="popUpContainer invalidAddressError homePageError hidden">
                     <button class="xButton xButtonError">X</button>
                     <h2>This isn't a valid address. Please enter a valid address and submit.</h2>
                 </div>
-        
                 <div class="popUpContainer noInputError homePageError hidden">
                     <button class="xButton xButtonError">X</button>
                     <h2>Please enter a valid address before submitting.</h2>
                 </div>
-        
                 <section class="popUpContainer noResultsNotification homePageError hidden">
                     <button class="xButton xButtonError">X</button>
                     <h2>Sorry, we didn't find any restaurants within walking distance from that address.</h2>
                 </section>
             </div>
         </section>
-
         <section class="resultsPage hidden">
-            
             <header>
                 <div class="buttonContainer">
                     <button class="newSearchButton"><i class="fas fa-search-location"></i>New Search</button>
@@ -62,35 +55,29 @@
                 </div>
                 <h2 class="showingFor">Showing <span class="resultsCount"></span> results for <span class="userInput"></span></h2>
             </header>
-           
             <div class="allResults">
                 <!--js will append results here-->
             </div>
-  
         </section>
-
         <section class="popUpContainer calculationsContainer hidden">
-            
             <div class="calcContentContainer">
                 <button class="xButton xButtonCalc">X</button>
                 <h2>How was your carbon footprint calculated?</h2>
                 <p>Your potential CO<sub>2</sub> emissions from driving were calculated with the assumption that your vehicle emits 357 grams/mile. This is the average for model year 2017 vehicles <a target="_blank" href="https://www.epa.gov/automotive-trends/highlights-automotive-trends-report">(source)</a>.</p>
             </div>
-            
         </section>
-    
     </main>
 
     <div id="map"></div> <!--necessary for google api. not displayed.-->
-
+    
     <footer>
         <img src="images/googleLogo.png" alt="powered by Google" class="poweredByGoogleImgFooter">
     </footer>
-
+    
     <button id="toTopButton" class="toTopButton" aria-label="toTop button"><i class="fas fa-arrow-up fa-2x"></i></button>   
 
-<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-<script src="index.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script> 
+    <script src="index.js"></script>
 
 </body>
 </html>
